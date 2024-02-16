@@ -1,0 +1,24 @@
+function doGet(e) {
+  // Get the current date and time in the specified format
+  const now = new Date();
+  const date = Utilities.formatDate(now, Session.getScriptTimeZone(), 'MM-dd-yyyy');
+  const time = Utilities.formatDate(now, Session.getScriptTimeZone(), 'HH:mm:ss');
+
+  // Check for data in the URL query parameter
+  const data = e.parameter.data || ''; // Optional data from URL parameter
+
+  // Get the spreadsheet ID
+  const spreadsheetId = "1KHOBkDXrPerlsuL7-T0EUSmUMNwYRYymL9H4Yr8mu94"; // Replace with your spreadsheet ID
+
+  // Open the spreadsheet and get the target sheet
+  const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName('Sheet1'); // Change 'Sheet1' to your desired sheet name
+
+  // Get the next row index to write the data to
+  const nextRowIndex = sheet.getLastRow() + 1;
+
+  // Write the data to the sheet
+  sheet.getRange(nextRowIndex, 1, 1, 3).setValues([[date, time, data]]);
+
+  // Return a success message (optional)
+  return ContentService.createTextOutput('Data received and saved successfully!');
+}
